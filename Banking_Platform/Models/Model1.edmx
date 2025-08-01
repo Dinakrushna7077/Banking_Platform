@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Banking_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Account_mst">
+          <Key>
+            <PropertyRef Name="AccId" />
+          </Key>
+          <Property Name="AccId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AccountNo" Type="bigint" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="AccType" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="CreatedDt" Type="date" Nullable="false" />
+          <Property Name="BranchId" Type="int" />
+        </EntityType>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BankMst">
+          <Key>
+            <PropertyRef Name="BankID" />
+          </Key>
+          <Property Name="BankID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BankName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="BranchCode" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IFSCCode" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="State" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nominee">
+          <Key>
+            <PropertyRef Name="NomineeId" />
+          </Key>
+          <Property Name="NomineeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccId" Type="bigint" />
+          <Property Name="FullName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Relationship" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DateOfBirth" Type="date" Nullable="false" />
+          <Property Name="Phone" Type="varchar" MaxLength="20" />
+          <Property Name="AdharNo" Type="varchar" MaxLength="12" />
+          <Property Name="Address" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FromAcId" Type="bigint" />
+          <Property Name="ToAcId" Type="bigint" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Gmail" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="PhoneNo" Type="varchar" MaxLength="20" />
+          <Property Name="DOB" Type="datetime" />
+          <Property Name="Gender" Type="varchar" MaxLength="10" />
+          <Property Name="FatherName" Type="varchar" MaxLength="100" />
+          <Property Name="MotherName" Type="varchar" MaxLength="100" />
+          <Property Name="Address" Type="varchar(max)" />
+          <Property Name="City" Type="varchar" MaxLength="50" />
+          <Property Name="Pin" Type="int" />
+          <Property Name="Country" Type="varchar" MaxLength="50" />
+          <Property Name="DOO" Type="date" />
+          <Property Name="Role" Type="int" Nullable="false" />
+          <Property Name="AadharNo" Type="varchar" MaxLength="12" />
+          <Property Name="PAN" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <Association Name="FK__Account_m__Branc__6383C8BA">
+          <End Role="BankMst" Type="Self.BankMst" Multiplicity="0..1" />
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BankMst">
+              <PropertyRef Name="BankID" />
+            </Principal>
+            <Dependent Role="Account_mst">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Account_m__UserI__619B8048">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Account_mst">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nominee__AccId__6C190EBB">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Nominee" Type="Self.Nominee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Nominee">
+              <PropertyRef Name="AccId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__FromA__66603565">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="FromAcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__ToAcI__6754599E">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="ToAcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__Role__4BAC3F29">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Banking_DBModelStoreContainer">
+          <EntitySet Name="Account_mst" EntityType="Self.Account_mst" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BankMst" EntityType="Self.BankMst" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nominee" EntityType="Self.Nominee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Account_m__Branc__6383C8BA" Association="Self.FK__Account_m__Branc__6383C8BA">
+            <End Role="BankMst" EntitySet="BankMst" />
+            <End Role="Account_mst" EntitySet="Account_mst" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Account_m__UserI__619B8048" Association="Self.FK__Account_m__UserI__619B8048">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Account_mst" EntitySet="Account_mst" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nominee__AccId__6C190EBB" Association="Self.FK__Nominee__AccId__6C190EBB">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Nominee" EntitySet="Nominee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__FromA__66603565" Association="Self.FK__Transacti__FromA__66603565">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__ToAcI__6754599E" Association="Self.FK__Transacti__ToAcI__6754599E">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__Role__4BAC3F29" Association="Self.FK__Users__Role__4BAC3F29">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Banking_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account_mst">
+          <Key>
+            <PropertyRef Name="AccId" />
+          </Key>
+          <Property Name="AccId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="AccountNo" Type="Int64" Nullable="false" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="AccType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BranchId" Type="Int32" />
+          <NavigationProperty Name="BankMst" Relationship="Self.FK__Account_m__Branc__6383C8BA" FromRole="Account_mst" ToRole="BankMst" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Account_m__UserI__619B8048" FromRole="Account_mst" ToRole="Users" />
+          <NavigationProperty Name="Nominees" Relationship="Self.FK__Nominee__AccId__6C190EBB" FromRole="Account_mst" ToRole="Nominee" />
+          <NavigationProperty Name="Transactions" Relationship="Self.FK__Transacti__FromA__66603565" FromRole="Account_mst" ToRole="Transactions" />
+          <NavigationProperty Name="Transactions1" Relationship="Self.FK__Transacti__ToAcI__6754599E" FromRole="Account_mst" ToRole="Transactions" />
+        </EntityType>
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="AdminID" />
+          </Key>
+          <Property Name="AdminID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="BankMst">
+          <Key>
+            <PropertyRef Name="BankID" />
+          </Key>
+          <Property Name="BankID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BankName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BranchCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IFSCCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Account_mst" Relationship="Self.FK__Account_m__Branc__6383C8BA" FromRole="BankMst" ToRole="Account_mst" />
+        </EntityType>
+        <EntityType Name="Nominee">
+          <Key>
+            <PropertyRef Name="NomineeId" />
+          </Key>
+          <Property Name="NomineeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccId" Type="Int64" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Relationship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="AdharNo" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Account_mst" Relationship="Self.FK__Nominee__AccId__6C190EBB" FromRole="Nominee" ToRole="Account_mst" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__Role__4BAC3F29" FromRole="Roles" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FromAcId" Type="Int64" />
+          <Property Name="ToAcId" Type="Int64" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Account_mst" Relationship="Self.FK__Transacti__FromA__66603565" FromRole="Transactions" ToRole="Account_mst" />
+          <NavigationProperty Name="Account_mst1" Relationship="Self.FK__Transacti__ToAcI__6754599E" FromRole="Transactions" ToRole="Account_mst" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Gmail" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PhoneNo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DOB" Type="DateTime" Precision="3" />
+          <Property Name="Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FatherName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MotherName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Pin" Type="Int32" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DOO" Type="DateTime" Precision="0" />
+          <Property Name="Role" Type="Int32" Nullable="false" />
+          <Property Name="AadharNo" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="PAN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Account_mst" Relationship="Self.FK__Account_m__UserI__619B8048" FromRole="Users" ToRole="Account_mst" />
+          <NavigationProperty Name="Role1" Relationship="Self.FK__Users__Role__4BAC3F29" FromRole="Users" ToRole="Roles" />
+        </EntityType>
+        <Association Name="FK__Account_m__Branc__6383C8BA">
+          <End Role="BankMst" Type="Self.BankMst" Multiplicity="0..1" />
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BankMst">
+              <PropertyRef Name="BankID" />
+            </Principal>
+            <Dependent Role="Account_mst">
+              <PropertyRef Name="BranchId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Account_m__UserI__619B8048">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Account_mst">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Nominee__AccId__6C190EBB">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Nominee" Type="Self.Nominee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Nominee">
+              <PropertyRef Name="AccId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__FromA__66603565">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="FromAcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Transacti__ToAcI__6754599E">
+          <End Role="Account_mst" Type="Self.Account_mst" Multiplicity="0..1" />
+          <End Role="Transactions" Type="Self.Transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account_mst">
+              <PropertyRef Name="AccId" />
+            </Principal>
+            <Dependent Role="Transactions">
+              <PropertyRef Name="ToAcId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__Role__4BAC3F29">
+          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Banking_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Account_mst" EntityType="Self.Account_mst" />
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="BankMsts" EntityType="Self.BankMst" />
+          <EntitySet Name="Nominees" EntityType="Self.Nominee" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK__Account_m__Branc__6383C8BA" Association="Self.FK__Account_m__Branc__6383C8BA">
+            <End Role="BankMst" EntitySet="BankMsts" />
+            <End Role="Account_mst" EntitySet="Account_mst" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Account_m__UserI__619B8048" Association="Self.FK__Account_m__UserI__619B8048">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Account_mst" EntitySet="Account_mst" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Nominee__AccId__6C190EBB" Association="Self.FK__Nominee__AccId__6C190EBB">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Nominee" EntitySet="Nominees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__FromA__66603565" Association="Self.FK__Transacti__FromA__66603565">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Transacti__ToAcI__6754599E" Association="Self.FK__Transacti__ToAcI__6754599E">
+            <End Role="Account_mst" EntitySet="Account_mst" />
+            <End Role="Transactions" EntitySet="Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__Role__4BAC3F29" Association="Self.FK__Users__Role__4BAC3F29">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Banking_DBModelStoreContainer" CdmEntityContainer="Banking_DBEntities">
+          <EntitySetMapping Name="Account_mst">
+            <EntityTypeMapping TypeName="Banking_DBModel.Account_mst">
+              <MappingFragment StoreEntitySet="Account_mst">
+                <ScalarProperty Name="AccId" ColumnName="AccId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="AccountNo" ColumnName="AccountNo" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="AccType" ColumnName="AccType" />
+                <ScalarProperty Name="CreatedDt" ColumnName="CreatedDt" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="Banking_DBModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="AdminID" ColumnName="AdminID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BankMsts">
+            <EntityTypeMapping TypeName="Banking_DBModel.BankMst">
+              <MappingFragment StoreEntitySet="BankMst">
+                <ScalarProperty Name="BankID" ColumnName="BankID" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="IFSCCode" ColumnName="IFSCCode" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nominees">
+            <EntityTypeMapping TypeName="Banking_DBModel.Nominee">
+              <MappingFragment StoreEntitySet="Nominee">
+                <ScalarProperty Name="NomineeId" ColumnName="NomineeId" />
+                <ScalarProperty Name="AccId" ColumnName="AccId" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Relationship" ColumnName="Relationship" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="AdharNo" ColumnName="AdharNo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="Banking_DBModel.Role">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="Banking_DBModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+                <ScalarProperty Name="FromAcId" ColumnName="FromAcId" />
+                <ScalarProperty Name="ToAcId" ColumnName="ToAcId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="Banking_DBModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Gmail" ColumnName="Gmail" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="FatherName" ColumnName="FatherName" />
+                <ScalarProperty Name="MotherName" ColumnName="MotherName" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="DOO" ColumnName="DOO" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="AadharNo" ColumnName="AadharNo" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

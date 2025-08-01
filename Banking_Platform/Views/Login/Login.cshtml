@@ -1,0 +1,69 @@
+﻿@model Banking_Platform.Models.Admin
+@{
+    ViewBag.Title = "login";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+<body>
+    <!-- Background layers -->
+    <div class="bg-image"></div>
+    <div class="bg-blur-overlay"></div>
+    <div class="container-fluid min-vh-100 d-flex align-items-center">
+        <div class="row w-100">
+
+            <!-- Left Content -->
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="left-content text-dark">
+                    <div>
+                        <h2>Welcome to Urban Bank</h2>
+                        <p>Manage your finances confidently with fast, secure, and convenient online banking services.</p>
+                        <ul class="list-unstyled">
+                            <li><i class="bi bi-check-circle-fill me-2"></i> Real-time account access</li>
+                            <li><i class="bi bi-check-circle-fill me-2"></i> Multi-layered security</li>
+                            <li><i class="bi bi-check-circle-fill me-2"></i> Instant fund transfers</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Login Form -->
+            <div class="col-md-6 d-flex align-items-center justify-content-center">
+                <div class="login-card">
+                    <div class="text-center mb-4">
+                        <h4 class="fw-bold">SecureBank Login</h4>
+                        <p class="text-muted small mb-0">Access your online banking dashboard</p>
+                    </div>
+
+                    <form>
+                        <div class="input-group-custom">
+                            <label for="email" class="form-label">Email Address</label>
+                            @Html.TextBoxFor(u => u.Email, new {@class="form-control",placeholder="example12@gmail.com"})
+                            @*<input type="email" class="form-control" id="email" placeholder="you@example.com" required>*@
+                        </div>
+
+                        <div class="input-group-custom">
+                            <label for="password" class="form-label">Password</label>
+                            @Html.TextBoxFor(p=>p.Password, new { @class = "form-control", placeholder = "Password" })
+                            @*<input type="password" class="form-control" id="password" placeholder="Enter your password" required>*@
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+
+                        <div class="text-center small">
+                            <a href="#" class="text-decoration-none text-muted">Forgot password?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
